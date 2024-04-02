@@ -1,22 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// import Calendar from "react-calendar";
-// import moment from "moment";
-// import markStore from "@/store/markStore";
 import taskStore from "@/store/taskStore_";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-export default function TaskInput() {
+export default function TaskInput(parentId: number) {
   const [isToggled, setIsToggled] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
-  // const [value, setValue] = useState(moment());
   const [deadline, setDeadline] = useState("");
   const [taskInput, setTaskInput] = useState("");
 
-  // const fetchDeadlineList = markStore((state) => state.fetchDeadline);
   const fetchTaskList = taskStore((state) => state.fetchTodoList);
 
   const taskInputChangeHandler = (

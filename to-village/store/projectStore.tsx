@@ -10,6 +10,12 @@ interface Project {
   done: number;
   tasks: Task[];
 }
+
+interface NewProject {
+  id: number;
+  toDo: string;
+  done: number;
+}
 interface Task {
   id: number;
   toDo: string;
@@ -25,9 +31,9 @@ interface SubTask {
 interface ProjectList {
   projects: Project[];
   fetchProjectList: () => void;
-  fetchProjectDetail?: (id: number) => void;
+  fetchProjectDetail: (id: number) => void;
   createProject: (item: Project) => void;
-  updateProject: (id: number, item: Project) => void;
+  updateProject: (id: number, item: NewProject) => void;
   deleteProject: (id: number) => void;
 }
 
@@ -60,7 +66,7 @@ const projectStore = create<ProjectList>((set) => ({
       toDo: item.toDo,
     });
   },
-  updateProject: async (id: number, item: Project) => {
+  updateProject: async (id: number, item: NewProject) => {
     const response = await axios.patch(`http://localhost:8080/to-do/${id}`, {
       toDo: item.toDo,
       done: item.done,
@@ -68,9 +74,7 @@ const projectStore = create<ProjectList>((set) => ({
   },
   deleteProject: async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/to-do/${id}`, {
-        withCredentials: true,
-      });
+      const response = await axios.delete(`http://localhost:8080/to-do/${id}`);
       const data = await response.data;
       console.log(data);
     } catch (error) {

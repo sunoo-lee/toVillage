@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Weekly from "@/components/WeeklyCalendar/Weekly";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="container mx-auto relative flex min-h-screen flex-col items-center max-w-7xl bg-white">
+          <Weekly />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

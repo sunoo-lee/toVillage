@@ -18,24 +18,9 @@ export default function ProjectInput({ buttonToggle }: UserProps) {
   };
 
   const addProjectHandler = async (item: string) => {
-    const response = await axios.post(
-      "http://localhost:8080/to-do",
-      {
-        toDo: projectInput,
-        done: 0,
-        task: {
-          toDo: "test1",
-          done: 0,
-          subtask: {
-            toDo: "test2",
-            done: 0,
-          },
-        },
-      },
-      {
-        withCredentials: true,
-      }
-    );
+    const response = await axios.post("http://localhost:8080/to-do", {
+      toDo: projectInput,
+    });
 
     const data = await response.data;
     console.log(data);

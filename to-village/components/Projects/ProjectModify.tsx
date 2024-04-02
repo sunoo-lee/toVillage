@@ -20,16 +20,17 @@ export default function ProjectModify({
 }: UserProps) {
   const [projectInput, setProjectInput] = useState(toDo);
   const readProjectList = projectStore((state) => state.fetchProjectList);
+  console.log(id, toDo, done);
 
   const projectInputChangeHandler = (event: any) => {
     setProjectInput(event.target.value);
   };
 
   const updateProjectHandler = async () => {
-    const response = await axios.put(`http://localhost:8080/to-do/${id}`, {
+    const response = await axios.put(`http://localhost:8080/to-do`, {
       id,
       toDo: projectInput,
-      done,
+      done: 0,
     });
 
     const data = await response.data;
