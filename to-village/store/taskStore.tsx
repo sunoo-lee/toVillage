@@ -1,61 +1,55 @@
 import axios from "axios";
 import { create } from "zustand";
+import Task from "./taskValidator";
 
-interface Task {
+interface NewTask {
   parentId: number;
-  deadline: string;
   toDo: string;
-  // done: number;
+  deadline: string;
 }
 
-interface Tasks {
+interface UpdatedTask {
   id: number;
-  deadline: string;
-  done: number;
   toDo: string;
-  indexNum: number;
-  subtasks: [];
+  done: number;
 }
 
 interface TaskStore {
-  tasks: Tasks[];
-  createTask: (item: Task) => void;
+  tasks: Task[];
+  createTask: (item: NewTask) => void;
   readTask: (id: number) => void;
-  updateTask: (item: Task) => void;
+  updateTask: (item: UpdatedTask) => void;
   deleteTask: (id: number) => void;
 }
 
 const taskStore = create<TaskStore>((set) => ({
   tasks: [],
-  createTask: async (item: Task) => {
-    const response = await axios.post(
-      `http://localhost:8080/to-do/${item.parentId}`,
-      {
-        parentId: item.parentId,
-        toDo: item.toDo,
-        deadline: item.deadline,
-      }
-    );
+  createTask: async (item: NewTask) => {
+    const response = await axios.post(`http://localhost:8080/to-do`, item);
+    const data = await response.data;
+    console.log(data);
   },
 
   readTask: async (id: number) => {
     const response = await axios.get(`http://localhost:8080/to-do/${id}`);
     const data = await response.data;
+    console.log(data);
     set((state) => ({ tasks: data[0].tasks }));
   },
 
-  updateTask: async (item: Task) => {
-    const response = await axios.put(
-      `http://localhost:8080/to-do/projectId/taskId`,
-      {
-        toDo: item.toDo,
-      }
-    );
+  updateTask: async (item: UpdatedTask) => {
+    const response = await axios.put(`http://localhost:8080/to-do`, item);
+    const data = await response.data;
+    console.log(data);
   },
   deleteTask: async (id: number) => {
-    const response = await axios.delete(`http://localhost:8080/to-do/${id}`);
-    const data = response.data;
-    console.log(data);
+    try {
+      const response = await axios.delete(`http://localhost:8080/to-do/${id}`);
+      const data = response.data;
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   },
 }));
 

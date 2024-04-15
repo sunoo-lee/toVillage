@@ -1,44 +1,53 @@
 "use client";
-
+import subTaskStore from "@/store/subTaskStore";
+import SubTask from "@/store/subTaskValidator";
 import { useState } from "react";
-import taskStore from "@/store/taskStore";
-import Task from "@/store/taskValidator";
 
-type UserProps = {
+interface Props {
+  setSubTasks(subList: SubTask[]): void;
   buttonToggle(event: any): void;
+  subTaskData: SubTask;
   projectId: number;
-  taskData: Task;
-};
+  taskId: number;
+}
 
-export default function TaskModify({
+export default function SubTaskModify({
+  setSubTasks,
   buttonToggle,
+  subTaskData,
   projectId,
-  taskData,
-}: UserProps) {
-  const [taskInput, setTaskInput] = useState(taskData.toDo);
-  const readTask = taskStore((state) => state.readTask);
-  const updateTask = taskStore((state) => state.updateTask);
+  taskId,
+}: Props) {
+  const [subTaskInput, setSubTaskInput] = useState(subTaskData.toDo);
+  const readSubTask = subTaskStore((state) => state.readSubTask);
+  const updateSubTask = subTaskStore((state) => state.updateSubTask);
 
-  const taskInputChangeHandler = (event: any) => {
-    setTaskInput(event.target.value);
+  const subTaskInputChangeHanlder = (event: any) => {
+    setSubTaskInput(event.target.value);
   };
 
-  const updateTaskHandler = async () => {
-    const updatedTask = {
-      id: taskData.id,
-      toDo: taskInput,
-      done: taskData.done,
+  const updateSubTaskHanlder = async () => {
+    const updatedSubTask = {
+      id: subTaskData.id,
+      toDo: subTaskInput,
+      done: subTaskData.done,
     };
-    await updateTask(updatedTask);
-    setTaskInput("");
-    readTask(projectId);
+
+    await updateSubTask(updatedSubTask);
+    const newList = await readSubTask(projectId, taskId);
+    setSubTasks(newList);
+    setSubTaskInput("");
   };
 
   const submitHandler = (event: any) => {
     event.preventDefault();
+    updateSubTaskHanlder();
+    buttonToggle(false);
+  };
 
-    updateTaskHandler();
-    buttonToggle(event);
+  const cancelHandler = (event: any) => {
+    event.preventDefault();
+    buttonToggle(false);
   };
 
   return (
@@ -49,8 +58,8 @@ export default function TaskModify({
             className="w-full p-2 outline-0"
             type="text"
             placeholder="프로젝트 이름"
-            onChange={taskInputChangeHandler}
-            value={taskInput}
+            onChange={subTaskInputChangeHanlder}
+            value={subTaskInput}
           />
         </div>
         <div className="flex justify-between">
@@ -59,7 +68,7 @@ export default function TaskModify({
           </button>
           <div>
             <button
-              onClick={buttonToggle}
+              onClick={cancelHandler}
               className="text-base px-2 py-1 mr-2 break-keep border-2 rounded-md hover:bg-gray-100"
             >
               취소

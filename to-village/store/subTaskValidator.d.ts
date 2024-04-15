@@ -1,9 +1,10 @@
 interface SubTask {
   id: number;
-  indexNum: number;
-  deadline: string;
   toDo: string;
   done: number;
+  deadline: string;
+  hexColorCode: string;
+  indexNum: number;
 }
 
 export default SubTask;

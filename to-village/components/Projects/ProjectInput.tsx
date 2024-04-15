@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import projectStore from "@/store/projectStore";
-import axios from "axios";
 import ProjectBox from "../UI/ProjectBox";
 
 type UserProps = {
@@ -11,28 +10,28 @@ type UserProps = {
 
 export default function ProjectInput({ buttonToggle }: UserProps) {
   const [projectInput, setProjectInput] = useState("");
-  const readProjectList = projectStore((state) => state.fetchProjectList);
+  const readAllProject = projectStore((state) => state.readAllProject);
+  const createProject = projectStore((state) => state.createProject);
 
   const projectInputChangeHandler = (event: any) => {
     setProjectInput(event.target.value);
   };
 
-  const addProjectHandler = async (item: string) => {
-    const response = await axios.post("http://localhost:8080/to-do", {
+  const addProjectHandler = async () => {
+    const newProject = {
       toDo: projectInput,
-    });
+      hexColorCode: "000000",
+    };
 
-    const data = await response.data;
-    console.log(data);
+    await createProject(newProject);
     setProjectInput("");
-    readProjectList();
+    readAllProject();
   };
 
   const submitHandler = (event: any) => {
     event.preventDefault();
 
-    const project = projectInput;
-    addProjectHandler(project);
+    addProjectHandler();
     buttonToggle(false);
   };
 

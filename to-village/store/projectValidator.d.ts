@@ -1,7 +1,10 @@
+import Task from "./taskValidator";
+
 interface Project {
   id: number;
   toDo: string;
-  done: number;
+  hexColorCode: string;
+  tasks: Task[];
 }
 
 export default Project;

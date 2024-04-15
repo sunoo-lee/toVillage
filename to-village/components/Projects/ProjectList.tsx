@@ -3,30 +3,28 @@
 import projectStore from "@/store/projectStore";
 import { useEffect, useState } from "react";
 import ProjectItem from "./ProjectItem";
+
 export default function ProjectList() {
   const [isLoaded, setIsLoaded] = useState(false);
   const projectList = projectStore((state) => state.projects);
-  const fetchProjectList = projectStore((state) => state.fetchProjectList);
+  const readAllProject = projectStore((state) => state.readAllProject);
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    fetchProjectList();
-  }, [fetchProjectList]);
+    readAllProject();
+  }, [readAllProject]);
 
   return (
     <div>
       <ul>
         {isLoaded ? (
           projectList.map((item) => (
-            <ProjectItem
-              key={item.id}
-              id={item.id}
-              toDo={item.toDo}
-              done={item.done}
-            />
+            <li key={item.id}>
+              <ProjectItem projectData={item} />
+            </li>
           ))
         ) : (
           <div></div>

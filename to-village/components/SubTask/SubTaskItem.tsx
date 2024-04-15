@@ -1,19 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import SubTask from "./subTaskValidator";
 import axios from "axios";
+import SubTask from "@/store/subTaskValidator";
+import subTaskStore from "@/store/subTaskStore";
+import Task from "@/store/taskValidator";
+import SubTaskModify from "./SubTaskModify";
 
-interface data {
+interface Props {
+  setSubTasks(subList: SubTask[]): void;
   data: SubTask;
-  parentId: number;
+  taskId: number;
+  projectId: number;
 }
 
-export default function SubTaskItem({ data, parentId }: data) {
+export default function SubTaskItem({
+  setSubTasks,
+  data,
+  taskId,
+  projectId,
+}: Props) {
   const buttonClass = " w-6 h-6 mr-2 border rounded-full ";
   const [classControl, setClassControl] = useState(buttonClass);
   const [isChecked, setIsChecked] = useState(false);
   const [updateToggle, setUpdateToggle] = useState(false);
+  const readSubTask = subTaskStore((state) => state.readSubTask);
+  const deleteSubTask = subTaskStore((state) => state.deleteSubTask);
 
   const buttonClickHandler = (event: any) => {
     event.preventDefault();
@@ -26,51 +38,56 @@ export default function SubTaskItem({ data, parentId }: data) {
 
   const updateToggleHandler = (event: any) => {
     event.preventDefault();
-
-    setTimeout(() => {
-      if (updateToggle) {
-        setUpdateToggle(false);
-      } else {
-        setUpdateToggle(true);
-      }
-    }, 100);
+    if (updateToggle) {
+      setUpdateToggle(false);
+    } else {
+      setUpdateToggle(true);
+    }
   };
 
   const subTaskDelete = async (event: any) => {
-    const response = await axios.delete(
-      `http://localhost:8080/to-do/${parentId}`
-    );
+    await deleteSubTask(data.id);
+    const updatedList = await readSubTask(projectId, taskId);
+    setSubTasks(updatedList);
   };
 
-  const subTaskUpdate = async (event: any) => {};
-
   return (
-    <>
-      <li className="flex items-center justify-between pt-4">
-        <div className="flex">
-          <button
-            onClick={buttonClickHandler}
-            className={classControl}
-            role="checkbox"
-            aria-checked="false"
-          ></button>
-          <div>{data.toDo}</div>
-        </div>
-        <div className="flex">
-          <button
-            onClick={updateToggleHandler}
-            className="w-6 h-6 mr-2 text-sm text-center text-white bg-blue-300 rounded-full hover:bg-blue-500 "
-          >
-            E
-          </button>
-          <button
-            onClick={subTaskDelete}
-            className="w-6 h-6 mr-2 text-sm text-center text-white bg-red-400 rounded-full hover:bg-red-500 "
-          >
-            D
-          </button>
-        </div>
-      </li>
-    </>
+    <li className="flex items-center justify-between pt-4">
+      {!updateToggle ? (
+        <>
+          <div className="flex">
+            <button
+              onClick={buttonClickHandler}
+              className={classControl}
+              role="checkbox"
+              aria-checked="false"
+            ></button>
+            <div>{data.toDo}</div>
+          </div>
+          <div className="flex">
+            <button
+              onClick={updateToggleHandler}
+              className="w-6 h-6 mr-2 text-sm text-center text-white bg-blue-300 rounded-full hover:bg-blue-500 "
+            >
+              E
+            </button>
+            <button
+              onClick={subTaskDelete}
+              className="w-6 h-6 mr-2 text-sm text-center text-white bg-red-400 rounded-full hover:bg-red-500 "
+            >
+              D
+            </button>
+          </div>
+        </>
+      ) : (
+        <SubTaskModify
+          setSubTasks={setSubTasks}
+          buttonToggle={setUpdateToggle}
+          projectId={projectId}
+          taskId={taskId}
+          subTaskData={data}
+        />
+      )}
+    </li>
   );
 }

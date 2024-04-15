@@ -4,39 +4,32 @@ import { useState } from "react";
 import projectStore from "@/store/projectStore";
 import axios from "axios";
 import ProjectBox from "../UI/ProjectBox";
+import Project from "@/store/projectValidator";
 
-type UserProps = {
+type Props = {
   buttonToggle(event: any): void;
-  id: number;
-  toDo: string;
-  done: number;
+  projectData: Project;
 };
 
-export default function ProjectModify({
-  buttonToggle,
-  id,
-  toDo,
-  done,
-}: UserProps) {
-  const [projectInput, setProjectInput] = useState(toDo);
-  const readProjectList = projectStore((state) => state.fetchProjectList);
-  console.log(id, toDo, done);
+export default function ProjectModify({ buttonToggle, projectData }: Props) {
+  const [projectInput, setProjectInput] = useState(projectData.toDo);
+  const readAllProject = projectStore((state) => state.readAllProject);
+  const updateProject = projectStore((state) => state.updateProject);
 
   const projectInputChangeHandler = (event: any) => {
     setProjectInput(event.target.value);
   };
 
   const updateProjectHandler = async () => {
-    const response = await axios.put(`http://localhost:8080/to-do`, {
-      id,
+    const updatedProject = {
+      id: projectData.id,
       toDo: projectInput,
-      done: 0,
-    });
+      hexColorCode: "000000",
+    };
 
-    const data = await response.data;
-    console.log(data);
+    await updateProject(updatedProject);
     setProjectInput("");
-    readProjectList();
+    readAllProject();
   };
 
   const submitHandler = (event: any) => {

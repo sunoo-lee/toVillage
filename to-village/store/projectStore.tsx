@@ -1,81 +1,61 @@
 import axios from "axios";
 import { create } from "zustand";
-
-// 1. axios 전역 설정
-// axios.defaults.withCredentials = true; // withCredentials 전역 설정
-
-interface Project {
-  id: number;
-  toDo: string;
-  done: number;
-  tasks: Task[];
-}
-
-interface NewProject {
-  id: number;
-  toDo: string;
-  done: number;
-}
-interface Task {
-  id: number;
-  toDo: string;
-  done: number;
-  subTask: SubTask[];
-}
-interface SubTask {
-  id: number;
-  toDo: string;
-  done: number;
-}
+import Project from "./projectValidator";
 
 interface ProjectList {
   projects: Project[];
-  fetchProjectList: () => void;
-  fetchProjectDetail: (id: number) => void;
-  createProject: (item: Project) => void;
-  updateProject: (id: number, item: NewProject) => void;
+  readAllProject: () => void;
+  readProjectDetail: (id: number) => void;
+  createProject: (item: NewProject) => void;
+  updateProject: (item: NewProject) => void;
   deleteProject: (id: number) => void;
+}
+
+interface NewProject {
+  id?: number;
+  toDo: string;
+  hexColorCode: string;
 }
 
 const projectStore = create<ProjectList>((set) => ({
   projects: [],
-  fetchProjectList: async () => {
+  readAllProject: async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/to-do/`);
+      const response = await axios.get(`http://localhost:8080/to-do`);
       const data = await response.data;
       const loadedProject: Project[] = [];
       for (const key in data) {
         loadedProject.push({
           id: data[key].id,
           toDo: data[key].toDo,
-          done: data[key].done,
+          hexColorCode: data[key].hexColorCode,
           tasks: data[key].tasks,
         });
       }
       set((state) => ({ projects: loadedProject }));
-      console.log(data);
+      // set((state) => ({ projects: data }));
+      console.log(loadedProject);
     } catch (error: any) {
       alert(error.message);
     }
   },
-  fetchProjectDetail: async (id: number) => {
+  readProjectDetail: async (id: number) => {
     const response = await axios.get(`http://localhost:8080/to-do/${id}`);
   },
-  createProject: async (item: Project) => {
-    const response = await axios.post("http://localhost:8080/to-do", {
-      toDo: item.toDo,
-    });
+  createProject: async (item: NewProject) => {
+    const response = await axios.post("http://localhost:8080/to-do", item);
+    const data = await response.data;
+    console.log(data);
   },
-  updateProject: async (id: number, item: NewProject) => {
-    const response = await axios.patch(`http://localhost:8080/to-do/${id}`, {
-      toDo: item.toDo,
-      done: item.done,
-    });
+  updateProject: async (item: NewProject) => {
+    const response = await axios.put(`http://localhost:8080/to-do`, item);
+    const data = await response.data;
+    console.log(data);
   },
-  deleteProject: async (id) => {
+  deleteProject: async (id: number) => {
     try {
       const response = await axios.delete(`http://localhost:8080/to-do/${id}`);
-      const data = await response.data;
+      const data = response.data;
       console.log(data);
     } catch (error) {
       console.log(error);

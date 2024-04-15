@@ -1,11 +1,12 @@
-import SubTask from "../SubTask/subTaskValidator";
+import SubTask from "./subTaskValidator";
 
 interface Task {
   id: number;
-  indexNum: number;
-  deadline: string;
   toDo: string;
   done: number;
+  deadline: string;
+  indexNum: number;
+  hexColorCode: string;
   subtasks: SubTask[];
 }
 

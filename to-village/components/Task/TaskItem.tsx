@@ -1,33 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 import taskStore from "@/store/taskStore";
-import projectStore from "@/store/projectStore";
 import TaskModify from "./TaskModify";
-import Task from "./taskValidator";
-import SubTaskFactory from "../SubTask/SubTaskFactory";
-import SubTaskItem from "../SubTask/SubTaskItem";
+import SubTaskList from "../SubTask/SubTaskList";
+import Task from "@/store/taskValidator";
 
-interface data {
-  data: Task;
+interface Props {
+  taskData: Task;
   projectId: number;
 }
 
-export default function TaskItem({ projectId, data }: data) {
+export default function TaskItem({ projectId, taskData }: Props) {
   const buttonClass = " w-6 h-6 mr-2 border rounded-full ";
   const [classControl, setClassControl] = useState(buttonClass);
   const [isChecked, setIsChecked] = useState(false);
   const [subTaskToggle, setSubTaskToggle] = useState(false);
   const [updateToggle, setUpdateToggle] = useState(false);
 
-  const [newTask, setNewTask] = useState(data.toDo);
-  const updateTask = taskStore((state) => state.updateTask);
+  const [newTask, setNewTask] = useState(taskData.toDo);
   const deleteTask = taskStore((state) => state.deleteTask);
-  const fetchTaskList = projectStore((state) => state.fetchProjectList);
-  // console.log(data);
-
-  // console.log(projectId, data.id, data.toDo);
+  const readTask = taskStore((state) => state.readTask);
 
   const subTaskToggleHandler = () => {
     setSubTaskToggle((prev) => !prev);
@@ -44,27 +37,16 @@ export default function TaskItem({ projectId, data }: data) {
 
   const updateToggleHandler = (event: any) => {
     event.preventDefault();
-
-    setTimeout(() => {
-      if (updateToggle) {
-        setUpdateToggle(false);
-      } else {
-        setUpdateToggle(true);
-      }
-    }, 100);
+    if (updateToggle) {
+      setUpdateToggle(false);
+    } else {
+      setUpdateToggle(true);
+    }
   };
 
-  const deleteTaskHandler = async (event: any) => {
-    event.preventDefault();
-    console.log(projectId, data.id);
-    console.log(`http://localhost:8080/to-do/${data.id}`);
-    const response = await axios.delete(
-      `http://localhost:8080/to-do/${data.id}`
-    );
-    // const resData = await response.data;
-    // console.log(resData);
-    // deleteTask(data.id);
-    fetchTaskList();
+  const deleteTaskHandler = async () => {
+    await deleteTask(taskData.id);
+    await readTask(projectId);
   };
 
   const taskInputChangeHandler = (event: any) => {
@@ -93,7 +75,7 @@ export default function TaskItem({ projectId, data }: data) {
                 aria-checked="false"
               ></button>
               {!updateToggle ? (
-                <div>{data.toDo}</div>
+                <div>{taskData.toDo}</div>
               ) : (
                 <input
                   className=" outline-none border-2 border-neutral-700 rounded-md"
@@ -119,23 +101,14 @@ export default function TaskItem({ projectId, data }: data) {
             </div>
           </div>
           {subTaskToggle && (
-            <div>
-              <ul className="ml-12">
-                {data.subtasks.map((item, i) => (
-                  <SubTaskItem parentId={projectId} data={item} key={i} />
-                ))}
-              </ul>
-              <SubTaskFactory id={data.id} parentId={projectId} />
-            </div>
+            <SubTaskList projectId={projectId} taskData={taskData} />
           )}
         </>
       ) : (
         <TaskModify
           buttonToggle={updateToggleHandler}
           projectId={projectId}
-          id={data.id}
-          toDo={data.toDo}
-          done={data.done}
+          taskData={taskData}
         />
       )}
     </li>

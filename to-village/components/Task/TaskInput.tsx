@@ -1,18 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import taskStore from "@/store/taskStore_";
+import { useState } from "react";
+import ProjectBox from "../UI/ProjectBox";
+import taskStore from "@/store/taskStore";
 
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
+interface Props {
+  buttonToggle(state: boolean): void;
+  parentId: number;
+}
 
-export default function TaskInput(parentId: number) {
-  const [isToggled, setIsToggled] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
-  const [deadline, setDeadline] = useState("");
+export default function TaskInput({ buttonToggle, parentId }: Props) {
   const [taskInput, setTaskInput] = useState("");
-
-  const fetchTaskList = taskStore((state) => state.fetchTodoList);
+  const readTask = taskStore((state) => state.readTask);
+  const createTask = taskStore((state) => state.createTask);
 
   const taskInputChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -20,68 +20,64 @@ export default function TaskInput(parentId: number) {
     setTaskInput(event.target.value);
   };
 
-  const addTaskHandler = async (task: any) => {
-    const response = await fetch(
-      "https://http-react-8fe59-default-rtdb.firebaseio.com/task.json",
-      {
-        method: "POST",
-        body: JSON.stringify(task),
-        headers: {
-          "Content-Type": "app/json",
-        },
-      }
-    );
+  const createTaskHandler = async () => {
+    const newTask = {
+      parentId: parentId,
+      toDo: taskInput,
+      deadline: new Intl.DateTimeFormat("ko-KR").format(new Date()),
+    };
 
-    const data = await response.json();
+    await createTask(newTask);
+
+    readTask(parentId);
     setTaskInput("");
-    // setValue(moment());
-    setDeadline("");
-    setIsSelected(false);
-    // fetchDeadlineList();
-    fetchTaskList();
   };
 
   const submitHandler = (event: any) => {
     event.preventDefault();
-
-    const task = {
-      task: taskInput,
-      deadline: isSelected ? deadline : "",
-    };
-    console.log(task);
-    addTaskHandler(task);
+    createTaskHandler();
+    buttonToggle(false);
   };
 
-  const onClickDayHander = (val: any, event: any) => {
-    setIsSelected(true);
-    // setValue(val);
+  const cancelHandler = (event: any) => {
+    event.preventDefault();
+    buttonToggle(false);
   };
-
-  // useEffect(() => {
-  //   let selectedDate = moment(value).format("YYYY-MM-DD");
-  //   setIsToggled(false);
-  //   setDeadline(selectedDate);
-  // }, [value]);
 
   return (
     <div className="relative">
-      <form>
-        <div className="text-lg mb-3 flex justify-between">
-          <input
-            className="w-full p-2 mb-2 outline-0"
-            type="text"
-            placeholder="작업 이름"
-            onChange={taskInputChangeHandler}
-            value={taskInput}
-          />
-          <button
-            onClick={submitHandler}
-            className="absolute right-0 text-sm px-3 py-2 break-keep text-white bg-red-400 rounded-md hover:bg-red-500"
-          >
-            작업 추가
-          </button>
-        </div>
-      </form>
+      <ProjectBox>
+        <form>
+          <div className="text-lg mb-3 flex justify-between items-center border-b-2">
+            <input
+              className="w-full p-2 outline-0"
+              type="text"
+              placeholder="Task"
+              onChange={taskInputChangeHandler}
+              value={taskInput}
+            />
+          </div>
+          <div className="flex justify-between">
+            <button className="text-base px-2 py-1 break-keep border-2 rounded-md hover:bg-red-500">
+              마감 날짜
+            </button>
+            <div className="flex">
+              <button
+                onClick={cancelHandler}
+                className="mr-1 text-base px-2 py-1 break-keep border-2 rounded-md hover:bg-slate-200"
+              >
+                취소
+              </button>
+              <button
+                onClick={submitHandler}
+                className="text-base px-2 py-1 break-keep text-white bg-red-400 rounded-md hover:bg-red-500"
+              >
+                추가하기
+              </button>
+            </div>
+          </div>
+        </form>
+      </ProjectBox>
     </div>
   );
 }
