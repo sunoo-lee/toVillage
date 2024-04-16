@@ -33,7 +33,6 @@ const taskStore = create<TaskStore>((set) => ({
   readTask: async (id: number) => {
     const response = await axios.get(`http://localhost:8080/to-do/${id}`);
     const data = await response.data;
-    console.log(data);
     set((state) => ({ tasks: data[0].tasks }));
   },
 

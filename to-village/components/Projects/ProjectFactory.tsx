@@ -4,12 +4,12 @@ import { useState } from "react";
 import ProjectInput from "./ProjectInput";
 
 export default function ProjectFactory() {
-  const [addButtonToggle, setaddButtonToggle] = useState(false);
+  const [addButtonToggle, setAddButtonToggle] = useState(false);
   const addButtonHandler = () => {
     if (addButtonToggle) {
-      setaddButtonToggle(false);
+      setAddButtonToggle(false);
     } else {
-      setaddButtonToggle(true);
+      setAddButtonToggle(true);
     }
   };
 
@@ -18,12 +18,12 @@ export default function ProjectFactory() {
       {!addButtonToggle ? (
         <button
           onClick={addButtonHandler}
-          className="p-2 rounded-md text-base text-red-500 cursor-pointer hover:bg-red-100"
+          className="p-2 rounded-md text-base text-neutral-300 cursor-pointer hover:text-red-500"
         >
           +추가하기
         </button>
       ) : (
-        <ProjectInput buttonToggle={setaddButtonToggle} />
+        <ProjectInput buttonToggle={setAddButtonToggle} />
       )}
     </div>
   );

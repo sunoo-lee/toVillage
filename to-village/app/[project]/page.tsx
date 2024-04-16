@@ -31,11 +31,13 @@ export default function ProjectDetails() {
   }, [projectId, readTask]);
 
   return (
-    <div className=" font-medium w-full mb-8">
-      <h1 className="p-4 text-3xl mb-4 border-b-2 border-slate-400/50">
-        {projectName}
-      </h1>
-      <div className="px-4">
+    <div className="font-medium w-full mt-8">
+      <div className="text-2xl mb-8 ml-6 ">
+        <span className="px-6 py-2 rounded-full bg-blue-300">
+          {projectName}
+        </span>
+      </div>
+      <div className="px-8">
         <TaskList parentId={projectId} />
         <TaskFactory parentId={projectId} />
       </div>

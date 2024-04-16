@@ -22,7 +22,7 @@ export default function TaskFactory({ parentId }: parentId) {
       {!addButtonToggle ? (
         <button
           onClick={addButtonHandler}
-          className="p-2 rounded-md text-base text-red-500 cursor-pointer hover:bg-red-100"
+          className="p-2 rounded-md text-base text-neutral-300 cursor-pointer hover:text-red-500"
         >
           +추가하기
         </button>

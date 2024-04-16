@@ -25,11 +25,11 @@ export default function SubTaskFactory({
   };
 
   return (
-    <div>
+    <div className="ml-10">
       {!addButtonToggle ? (
         <button
           onClick={addButtonHandler}
-          className="mt-3 p-2 rounded-md text-base text-red-500 cursor-pointer hover:bg-red-100"
+          className="p-2 rounded-md text-base text-neutral-300 cursor-pointer hover:text-red-500"
         >
           +추가하기
         </button>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import ProjectBox from "../UI/ProjectBox";
 import taskStore from "@/store/taskStore";
 
 interface Props {
@@ -46,11 +45,11 @@ export default function TaskInput({ buttonToggle, parentId }: Props) {
 
   return (
     <div className="relative">
-      <ProjectBox>
+      <div className="border rounded-full px-6 py-2 mt-3">
         <form>
-          <div className="text-lg mb-3 flex justify-between items-center border-b-2">
+          <div className="text-lg flex justify-between items-center my-1 border-b">
             <input
-              className="w-full p-2 outline-0"
+              className="w-full px-2 outline-0 "
               type="text"
               placeholder="Task"
               onChange={taskInputChangeHandler}
@@ -58,13 +57,18 @@ export default function TaskInput({ buttonToggle, parentId }: Props) {
             />
           </div>
           <div className="flex justify-between">
-            <button className="text-base px-2 py-1 break-keep border-2 rounded-md hover:bg-red-500">
-              마감 날짜
-            </button>
+            <div>
+              <button className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300">
+                마감
+              </button>
+              <button className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300">
+                반복
+              </button>
+            </div>
             <div className="flex">
               <button
                 onClick={cancelHandler}
-                className="mr-1 text-base px-2 py-1 break-keep border-2 rounded-md hover:bg-slate-200"
+                className="mr-1 text-base px-2 py-1 break-keep rounded-md hover:bg-slate-200"
               >
                 취소
               </button>
@@ -72,12 +76,12 @@ export default function TaskInput({ buttonToggle, parentId }: Props) {
                 onClick={submitHandler}
                 className="text-base px-2 py-1 break-keep text-white bg-red-400 rounded-md hover:bg-red-500"
               >
-                추가하기
+                추가
               </button>
             </div>
           </div>
         </form>
-      </ProjectBox>
+      </div>
     </div>
   );
 }

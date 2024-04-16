@@ -6,6 +6,7 @@ import SubTask from "@/store/subTaskValidator";
 import subTaskStore from "@/store/subTaskStore";
 import Task from "@/store/taskValidator";
 import SubTaskModify from "./SubTaskModify";
+import ProjectBox from "../UI/ProjectBox";
 
 interface Props {
   setSubTasks(subList: SubTask[]): void;
@@ -52,32 +53,36 @@ export default function SubTaskItem({
   };
 
   return (
-    <li className="flex items-center justify-between pt-4">
+    <div className="">
       {!updateToggle ? (
         <>
-          <div className="flex">
-            <button
-              onClick={buttonClickHandler}
-              className={classControl}
-              role="checkbox"
-              aria-checked="false"
-            ></button>
-            <div>{data.toDo}</div>
-          </div>
-          <div className="flex">
-            <button
-              onClick={updateToggleHandler}
-              className="w-6 h-6 mr-2 text-sm text-center text-white bg-blue-300 rounded-full hover:bg-blue-500 "
-            >
-              E
-            </button>
-            <button
-              onClick={subTaskDelete}
-              className="w-6 h-6 mr-2 text-sm text-center text-white bg-red-400 rounded-full hover:bg-red-500 "
-            >
-              D
-            </button>
-          </div>
+          <ProjectBox>
+            <div className="flex items-center justify-between">
+              <div className="flex">
+                <button
+                  onClick={buttonClickHandler}
+                  className={classControl}
+                  role="checkbox"
+                  aria-checked="false"
+                ></button>
+                <div className=" font-medium text-lg">{data.toDo}</div>
+              </div>
+              <div className="flex">
+                <button
+                  onClick={updateToggleHandler}
+                  className="w-6 h-6 mr-2 text-sm text-center text-white bg-blue-300 rounded-full hover:bg-blue-500 "
+                >
+                  E
+                </button>
+                <button
+                  onClick={subTaskDelete}
+                  className="w-6 h-6 mr-2 text-sm text-center text-white bg-red-400 rounded-full hover:bg-red-500 "
+                >
+                  D
+                </button>
+              </div>
+            </div>
+          </ProjectBox>
         </>
       ) : (
         <SubTaskModify
@@ -88,6 +93,6 @@ export default function SubTaskItem({
           subTaskData={data}
         />
       )}
-    </li>
+    </div>
   );
 }
