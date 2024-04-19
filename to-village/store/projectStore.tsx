@@ -33,8 +33,7 @@ const projectStore = create<ProjectList>((set) => ({
         });
       }
       set((state) => ({ projects: loadedProject }));
-      // set((state) => ({ projects: data }));
-      console.log(loadedProject);
+      // console.log(loadedProject);
     } catch (error: any) {
       alert(error.message);
     }
@@ -44,19 +43,19 @@ const projectStore = create<ProjectList>((set) => ({
   },
   createProject: async (item: NewProject) => {
     const response = await axios.post("http://localhost:8080/to-do", item);
-    const data = await response.data;
-    console.log(data);
+    // const data = await response.data;
+    // console.log(data);
   },
   updateProject: async (item: NewProject) => {
     const response = await axios.put(`http://localhost:8080/to-do`, item);
-    const data = await response.data;
-    console.log(data);
+    // const data = await response.data;
+    // console.log(data);
   },
   deleteProject: async (id: number) => {
     try {
       const response = await axios.delete(`http://localhost:8080/to-do/${id}`);
-      const data = response.data;
-      console.log(data);
+      // const data = response.data;
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }

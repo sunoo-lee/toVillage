@@ -33,10 +33,14 @@ export default function TaskList({ parentId }: dataList) {
       newIndexNum = newList[0].indexNum / 2;
     } else if (destination.index === newList.length - 1) {
       newIndexNum = newList[newList.length - 1].indexNum + 1024;
-    } else {
+    } else if (source.index < destination.index) {
       const preIndex = newList[destination.index].indexNum;
       const nextIndex = newList[destination.index + 1].indexNum;
-      newIndexNum = (preIndex + nextIndex) / 2;
+      newIndexNum = Math.ceil((preIndex + nextIndex) / 2);
+    } else if (source.index > destination.index) {
+      const preIndex = newList[destination.index - 1].indexNum;
+      const nextIndex = newList[destination.index].indexNum;
+      newIndexNum = Math.ceil((preIndex + nextIndex) / 2);
     }
 
     newList[source.index].indexNum = newIndexNum;
@@ -45,8 +49,6 @@ export default function TaskList({ parentId }: dataList) {
     newList.splice(destination?.index, 0, targetList);
     setTasks(newList);
     updateIndexNum(newList);
-
-    console.log(newList);
   };
 
   const updateIndexNum = async (updatedList: Task[]) => {

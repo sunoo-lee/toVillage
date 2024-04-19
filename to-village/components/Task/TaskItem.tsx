@@ -111,8 +111,10 @@ export default function TaskItem({ projectId, taskData }: Props) {
           taskData={taskData}
         />
       )}
-      {subTaskToggle && (
+      {subTaskToggle ? (
         <SubTaskList projectId={projectId} taskData={taskData} />
+      ) : (
+        <div></div>
       )}
     </div>
   );

@@ -26,8 +26,8 @@ const taskStore = create<TaskStore>((set) => ({
   tasks: [],
   createTask: async (item: NewTask) => {
     const response = await axios.post(`http://localhost:8080/to-do`, item);
-    const data = await response.data;
-    console.log(data);
+    // const data = await response.data;
+    // console.log(data);
   },
 
   readTask: async (id: number) => {
@@ -38,14 +38,14 @@ const taskStore = create<TaskStore>((set) => ({
 
   updateTask: async (item: UpdatedTask) => {
     const response = await axios.put(`http://localhost:8080/to-do`, item);
-    const data = await response.data;
-    console.log(data);
+    // const data = await response.data;
+    // console.log(data);
   },
   deleteTask: async (id: number) => {
     try {
       const response = await axios.delete(`http://localhost:8080/to-do/${id}`);
-      const data = response.data;
-      console.log(data);
+      // const data = response.data;
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }

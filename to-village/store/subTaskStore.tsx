@@ -27,8 +27,8 @@ const subTaskStore = create<SubTaskStore>((set) => ({
   subtasks: [],
   createSubTask: async (item: NewSubTask) => {
     const response = await axios.post(`http://localhost:8080/to-do`, item);
-    const data = await response.data;
-    console.log(data);
+    // const data = await response.data;
+    // console.log(data);
   },
   readSubTask: async (projectId: number, taskId: number) => {
     const response = await axios.get(
@@ -41,13 +41,13 @@ const subTaskStore = create<SubTaskStore>((set) => ({
   },
   updateSubTask: async (item: UpdatedSubTask) => {
     const response = await axios.put(`http://localhost:8080/to-do`, item);
-    const data = await response.data;
-    console.log(data);
+    // const data = await response.data;
+    // console.log(data);
   },
   deleteSubTask: async (id: number) => {
     const response = await axios.delete(`http://localhost:8080/to-do/${id}`);
-    const data = await response.data;
-    console.log(data);
+    // const data = await response.data;
+    // console.log(data);
   },
 }));
 

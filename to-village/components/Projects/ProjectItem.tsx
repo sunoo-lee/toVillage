@@ -37,7 +37,7 @@ export default function ProjectItem({ projectData }: Props) {
   return (
     <>
       {!updateToggle ? (
-        <Link href={`/${projectData.id}`}>
+        <Link href={`/project/${projectData.id}`}>
           <ProjectBox>
             <div>
               <div className="flex justify-between items-center">

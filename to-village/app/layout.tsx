@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Weekly from "@/components/WeeklyCalendar/Weekly";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scrollbar-hide">
       <body className={inter.className}>
-        <div className="container mx-auto relative flex min-h-screen flex-col items-center max-w-7xl bg-white ">
-          <Weekly />
+        <div className="container mx-auto relative flex min-h-screen  h-screen  flex-col items-center max-w-7xl bg-white ">
           {children}
         </div>
       </body>
