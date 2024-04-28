@@ -5,6 +5,7 @@ import axios from "axios";
 import subTaskStore from "@/store/subTaskStore";
 import Task from "@/store/taskValidator";
 import SubTask from "@/store/subTaskValidator";
+import Calendar from "../Calendar/Calendar";
 
 interface Props {
   buttonToggle(state: boolean): void;
@@ -20,6 +21,8 @@ export default function SubTaskInput({
   taskId,
 }: Props) {
   const [subTaskInput, setSubTaskInput] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [calendarToggle, setCalendarToggle] = useState(false);
   const createSubTask = subTaskStore((state) => state.createSubTask);
 
   const subTaskInputChangeHandler = (
@@ -42,12 +45,20 @@ export default function SubTaskInput({
     const newSubTask = {
       parentId: taskId,
       toDo: subTaskInput,
-      deadline: new Intl.DateTimeFormat("ko-KR").format(new Date()),
+      deadline,
     };
 
     await createSubTask(newSubTask);
     await readSubTaskList();
     console.log(projectId, taskId);
+  };
+
+  const deadlineButtonHandler = (event: any) => {
+    event.preventDefault();
+    setCalendarToggle((state) => !state);
+  };
+  const repeatButtonHandler = (event: any) => {
+    event.preventDefault();
   };
 
   const submitHandler = (event: any) => {
@@ -76,10 +87,22 @@ export default function SubTaskInput({
           </div>
           <div className="flex justify-between">
             <div>
-              <button className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300">
-                마감
+              <button
+                onClick={deadlineButtonHandler}
+                className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300"
+              >
+                {deadline ? deadline : "마감"}
               </button>
-              <button className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300">
+              {calendarToggle && (
+                <Calendar
+                  setDeadline={setDeadline}
+                  setToggle={setCalendarToggle}
+                />
+              )}
+              <button
+                onClick={repeatButtonHandler}
+                className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300"
+              >
                 반복
               </button>
             </div>

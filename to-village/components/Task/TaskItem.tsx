@@ -23,6 +23,8 @@ export default function TaskItem({ projectId, taskData }: Props) {
   const deleteTask = taskStore((state) => state.deleteTask);
   const readTask = taskStore((state) => state.readTask);
 
+  const [done, setDone] = useState(0);
+
   const subTaskToggleHandler = () => {
     setSubTaskToggle((prev) => !prev);
   };
@@ -56,7 +58,7 @@ export default function TaskItem({ projectId, taskData }: Props) {
 
   useEffect(() => {
     if (isChecked) {
-      setClassControl(buttonClass + "bg-cyan-400");
+      setClassControl(buttonClass + "bg-neutral-300");
     } else {
       setClassControl(buttonClass + "bg-white");
     }
@@ -77,7 +79,15 @@ export default function TaskItem({ projectId, taskData }: Props) {
                   aria-checked="false"
                 ></button>
                 {!updateToggle ? (
-                  <div className=" font-medium text-lg">{taskData.toDo}</div>
+                  <div
+                    className={`font-medium text-lg ${
+                      taskData.done === 1
+                        ? "text-neutral-300 italic line-through"
+                        : ""
+                    }`}
+                  >
+                    {taskData.toDo}
+                  </div>
                 ) : (
                   <input
                     className=" outline-none border-2 border-neutral-700 rounded-md"

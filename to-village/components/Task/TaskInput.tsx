@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import taskStore from "@/store/taskStore";
+import Calendar from "../Calendar/Calendar";
+import CalendarIcon from "@/assets/img/noun-calendar.svg";
+import RepeatIcon from "@/assets/img/noun-repeat.svg";
+import Image from "next/image";
 
 interface Props {
   buttonToggle(state: boolean): void;
@@ -10,6 +14,8 @@ interface Props {
 
 export default function TaskInput({ buttonToggle, parentId }: Props) {
   const [taskInput, setTaskInput] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [calendarToggle, setCalendarToggle] = useState(false);
   const readTask = taskStore((state) => state.readTask);
   const createTask = taskStore((state) => state.createTask);
 
@@ -23,13 +29,21 @@ export default function TaskInput({ buttonToggle, parentId }: Props) {
     const newTask = {
       parentId: parentId,
       toDo: taskInput,
-      deadline: new Intl.DateTimeFormat("ko-KR").format(new Date()),
+      deadline,
     };
 
     await createTask(newTask);
 
     readTask(parentId);
     setTaskInput("");
+  };
+
+  const deadlineButtonHandler = (event: any) => {
+    event.preventDefault();
+    setCalendarToggle((state) => !state);
+  };
+  const repeatButtonHandler = (event: any) => {
+    event.preventDefault();
   };
 
   const submitHandler = (event: any) => {
@@ -57,12 +71,33 @@ export default function TaskInput({ buttonToggle, parentId }: Props) {
             />
           </div>
           <div className="flex justify-between">
-            <div>
-              <button className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300">
-                마감
+            <div className="flex items-center">
+              <button
+                onClick={deadlineButtonHandler}
+                className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300"
+              >
+                {deadline ? (
+                  deadline
+                ) : (
+                  <div className="w-6">
+                    <Image src={CalendarIcon} alt="Calendar Icon" />
+                  </div>
+                )}
               </button>
-              <button className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300">
-                반복
+
+              {calendarToggle && (
+                <Calendar
+                  setDeadline={setDeadline}
+                  setToggle={setCalendarToggle}
+                />
+              )}
+              <button
+                onClick={repeatButtonHandler}
+                className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300"
+              >
+                <div className="w-6">
+                  <Image src={RepeatIcon} alt="Repeat Icon" />
+                </div>
               </button>
             </div>
             <div className="flex">
