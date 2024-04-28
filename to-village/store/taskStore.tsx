@@ -10,7 +10,7 @@ interface NewTask {
 
 interface UpdatedTask {
   id: number;
-  toDo: string;
+  toDo?: string;
   done: number;
 }
 
@@ -20,6 +20,7 @@ interface TaskStore {
   readTask: (id: number) => void;
   updateTask: (item: UpdatedTask) => void;
   deleteTask: (id: number) => void;
+  updateTaskDone: (item: UpdatedTask) => void;
 }
 
 const taskStore = create<TaskStore>((set) => ({
@@ -49,6 +50,10 @@ const taskStore = create<TaskStore>((set) => ({
     } catch (error) {
       console.log(error);
     }
+  },
+  updateTaskDone: async (item: UpdatedTask) => {
+    const response = await axios.put(`http://localhost:8080/to-do/done`, item);
+    const data = await response.data;
   },
 }));
 

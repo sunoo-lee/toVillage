@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import axios from "axios";
-import SubTask from "@/store/subTaskValidator";
 import subTaskStore from "@/store/subTaskStore";
-import Task from "@/store/taskValidator";
-import SubTaskModify from "./SubTaskModify";
+import SubTask from "@/store/subTaskValidator";
+import { useEffect, useState } from "react";
 import ProjectBox from "../UI/ProjectBox";
+import SubTaskModify from "./SubTaskModify";
 
 interface Props {
   setSubTasks(subList: SubTask[]): void;
@@ -27,13 +25,16 @@ export default function SubTaskItem({
   const [updateToggle, setUpdateToggle] = useState(false);
   const readSubTask = subTaskStore((state) => state.readSubTask);
   const deleteSubTask = subTaskStore((state) => state.deleteSubTask);
+  const updateSubTaskDone = subTaskStore((state) => state.updateSubTaskDone);
+
+  const [done, setDone] = useState(data.done);
 
   const buttonClickHandler = (event: any) => {
     event.preventDefault();
-    if (isChecked) {
-      setIsChecked(false);
+    if (done === 0) {
+      setDone(1);
     } else {
-      setIsChecked(true);
+      setDone(0);
     }
   };
 
@@ -52,6 +53,17 @@ export default function SubTaskItem({
     setSubTasks(updatedList);
   };
 
+  useEffect(() => {
+    const updateSubTaskDoneHandler = async () => {
+      const doneUpdated = {
+        id: data.id,
+        done: done,
+      };
+      await updateSubTaskDone(doneUpdated);
+    };
+    updateSubTaskDoneHandler();
+  }, [done, data, updateSubTaskDone]);
+
   return (
     <div className="">
       {!updateToggle ? (
@@ -61,11 +73,19 @@ export default function SubTaskItem({
               <div className="flex">
                 <button
                   onClick={buttonClickHandler}
-                  className={classControl}
+                  className={`${buttonClass} ${
+                    done === 1 ? "bg-neutral-300" : "bg-white"
+                  } `}
                   role="checkbox"
                   aria-checked="false"
                 ></button>
-                <div className=" font-medium text-lg">{data.toDo}</div>
+                <div
+                  className={`font-medium text-lg ${
+                    done === 1 ? "text-neutral-300 italic line-through" : ""
+                  }`}
+                >
+                  {data.toDo}
+                </div>
               </div>
               <div className="flex">
                 <button

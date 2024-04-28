@@ -9,6 +9,7 @@ interface SubTaskStore {
   readSubTask: (projectId: number, taskId: number) => Promise<SubTask[]>;
   updateSubTask: (item: UpdatedSubTask) => void;
   deleteSubTask: (id: number) => void;
+  updateSubTaskDone: (item: UpdatedSubTask) => void;
 }
 
 interface NewSubTask {
@@ -19,7 +20,7 @@ interface NewSubTask {
 
 interface UpdatedSubTask {
   id: number;
-  toDo: string;
+  toDo?: string;
   done: number;
 }
 
@@ -48,6 +49,10 @@ const subTaskStore = create<SubTaskStore>((set) => ({
     const response = await axios.delete(`http://localhost:8080/to-do/${id}`);
     // const data = await response.data;
     // console.log(data);
+  },
+  updateSubTaskDone: async (item: UpdatedSubTask) => {
+    const response = await axios.put(`http://localhost:8080/to-do/done`, item);
+    const data = await response.data;
   },
 }));
 

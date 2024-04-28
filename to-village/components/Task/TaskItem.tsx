@@ -22,8 +22,9 @@ export default function TaskItem({ projectId, taskData }: Props) {
   const [newTask, setNewTask] = useState(taskData.toDo);
   const deleteTask = taskStore((state) => state.deleteTask);
   const readTask = taskStore((state) => state.readTask);
+  const updateTaskDone = taskStore((state) => state.updateTaskDone);
 
-  const [done, setDone] = useState(0);
+  const [done, setDone] = useState(taskData.done);
 
   const subTaskToggleHandler = () => {
     setSubTaskToggle((prev) => !prev);
@@ -31,10 +32,10 @@ export default function TaskItem({ projectId, taskData }: Props) {
 
   const buttonClickHandler = (event: any) => {
     event.preventDefault();
-    if (isChecked) {
-      setIsChecked(false);
+    if (done === 0) {
+      setDone(1);
     } else {
-      setIsChecked(true);
+      setDone(0);
     }
   };
 
@@ -57,12 +58,15 @@ export default function TaskItem({ projectId, taskData }: Props) {
   };
 
   useEffect(() => {
-    if (isChecked) {
-      setClassControl(buttonClass + "bg-neutral-300");
-    } else {
-      setClassControl(buttonClass + "bg-white");
-    }
-  }, [isChecked]);
+    const updateTaskDoneHandler = async () => {
+      const doneUpdated = {
+        id: taskData.id,
+        done: done,
+      };
+      await updateTaskDone(doneUpdated);
+    };
+    updateTaskDoneHandler();
+  }, [done, taskData, updateTaskDone]);
 
   return (
     <div>
@@ -74,16 +78,16 @@ export default function TaskItem({ projectId, taskData }: Props) {
                 <button onClick={subTaskToggleHandler}>▶</button>
                 <button
                   onClick={buttonClickHandler}
-                  className={classControl}
+                  className={`${buttonClass} ${
+                    done === 1 ? "bg-neutral-300" : "bg-white"
+                  } `}
                   role="checkbox"
                   aria-checked="false"
                 ></button>
                 {!updateToggle ? (
                   <div
                     className={`font-medium text-lg ${
-                      taskData.done === 1
-                        ? "text-neutral-300 italic line-through"
-                        : ""
+                      done === 1 ? "text-neutral-300 italic line-through" : ""
                     }`}
                   >
                     {taskData.toDo}
