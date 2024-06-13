@@ -10,8 +10,8 @@ export default function Email({ email, setEmail }: Props) {
   };
 
   return (
-    <div className="pl-8 ">
-      <div className="text-4xl font-bold mb-8">이메일을 입력해주세요.</div>
+    <div className="w-full">
+      <div className="text-2xl font-bold mb-8">이메일을 입력해주세요.</div>
       <div>
         <input
           className="outline-none border-b border-black bg-transparent py-1"

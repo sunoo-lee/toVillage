@@ -21,6 +21,8 @@ const projectStore = create<ProjectList>((set) => ({
   projects: [],
   readAllProject: async () => {
     try {
+      const access_token = localStorage.getItem("access_token");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
       const response = await axios.get(`http://localhost:8080/to-do`);
       const data = await response.data;
       const loadedProject: Project[] = [];

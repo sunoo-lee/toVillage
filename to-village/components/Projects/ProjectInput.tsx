@@ -1,8 +1,11 @@
 "use client";
 
+import CalendarIcon from "@/assets/img/noun-calendar.svg";
+import RepeatIcon from "@/assets/img/noun-repeat.svg";
 import { useState } from "react";
 import projectStore from "@/store/projectStore";
 import ProjectBox from "../UI/ProjectBox";
+import ColorPicker from "../ColorPicker/ColorPicker";
 
 type UserProps = {
   buttonToggle(state: boolean): void;
@@ -53,14 +56,15 @@ export default function ProjectInput({ buttonToggle }: UserProps) {
               value={projectInput}
             />
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <div>
-              <button className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300">
+              <ColorPicker />
+              {/* <button className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300">
                 마감
               </button>
               <button className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300">
                 반복
-              </button>
+              </button> */}
             </div>
             <div className="flex">
               <button

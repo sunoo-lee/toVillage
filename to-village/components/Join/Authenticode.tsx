@@ -26,9 +26,9 @@ export default function Authenticode({ code, setCode }: Props) {
   }, [code]);
 
   return (
-    <div className="px-8 ">
-      <div className="text-4xl font-bold mb-8">인증코드를 입력해주세요.</div>
-      <div className="flex items-center">
+    <div className="w-full">
+      <div className="text-xl font-bold mb-8">인증코드를 입력해주세요.</div>
+      <div className="relative">
         <div className="relative border-b border-black">
           <input
             className="relative outline-none  bg-transparent py-1"
@@ -40,11 +40,11 @@ export default function Authenticode({ code, setCode }: Props) {
             onChange={inputChangehandler}
             value={code}
           />
-          <span className="relative right-0 text-red-500">3:00</span>
+          <span className="absolute bottom-0 left-0 text-red-500">3:00</span>
         </div>
         <button
           onClick={codeRequestButtonHandler}
-          className="ml-4 bg-slate-200 px-2 py-1 "
+          className="absolute top-0 right-0 bg-slate-200 px-2 py-1 "
         >
           재전송
         </button>

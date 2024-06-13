@@ -32,6 +32,8 @@ const taskStore = create<TaskStore>((set) => ({
   },
 
   readTask: async (id: number) => {
+    const access_token = localStorage.getItem("access_token");
+    axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
     const response = await axios.get(`http://localhost:8080/to-do/${id}`);
     const data = await response.data;
     set((state) => ({ tasks: data[0].tasks }));
@@ -39,7 +41,7 @@ const taskStore = create<TaskStore>((set) => ({
 
   updateTask: async (item: UpdatedTask) => {
     const response = await axios.put(`http://localhost:8080/to-do`, item);
-    // const data = await response.data;
+    const data = await response.data;
     // console.log(data);
   },
   deleteTask: async (id: number) => {

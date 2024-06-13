@@ -34,36 +34,60 @@ export default function ProjectItem({ projectData }: Props) {
     await readAllProject();
   };
 
+  const dropdownHandler = async (event: any) => {
+    event.preventDefault();
+    setDropdown((state) => !state);
+  };
+
+  const [dropdown, setDropdown] = useState(false);
+
   return (
     <>
       {!updateToggle ? (
         <Link href={`/project/${projectData.id}`}>
-          <ProjectBox>
-            <div>
-              <div className="flex justify-between items-center">
-                <div className="flex">
-                  <div></div>
-                  <div>{projectData.toDo}</div>
+          <div
+            className={`w-full p-3 px-5 bg-white border-2 rounded-xl border-slate-200 cursor-pointer transition-all duration-300 ease-in-out overflow-hidden ${
+              dropdown ? "h-40" : "h-16"
+            }`}
+          >
+            <div className="flex justify-between items-center">
+              <div className="flex">
+                <div className="px-4 py-1 text-xl rounded-full bg-blue-400">
+                  {projectData.toDo}
                 </div>
-                <div className="relative flex">
-                  <div className="flex">
-                    <button
-                      onClick={updateToggleHandler}
-                      className="w-6 h-6 mr-2 text-sm text-center text-white bg-blue-300 rounded-full hover:bg-blue-500 "
-                    >
-                      E
-                    </button>
-                    <button
-                      onClick={deleteTaskHandler}
-                      className="w-6 h-6 mr-2 text-sm text-center text-white bg-red-400 rounded-full hover:bg-red-500 "
-                    >
-                      D
-                    </button>
-                  </div>
+              </div>
+              <div className="relative flex">
+                <div className="flex">
+                  <button
+                    className={`p-2 transition-all ${
+                      dropdown && "rotate-[270deg] rotate"
+                    }`}
+                    onClick={dropdownHandler}
+                  >
+                    <div className="bg-black w-5 h-1"></div>
+                  </button>
+                  {/* <button
+                    onClick={updateToggleHandler}
+                    className="w-6 h-6 mr-2 text-sm text-center text-white bg-blue-300 rounded-full hover:bg-blue-500 "
+                  >
+                    E
+                  </button>
+                  <button
+                    onClick={deleteTaskHandler}
+                    className="w-6 h-6 mr-2 text-sm text-center text-white bg-red-400 rounded-full hover:bg-red-500 "
+                  >
+                    D
+                  </button> */}
                 </div>
               </div>
             </div>
-          </ProjectBox>
+            <div className="mt-2">
+              <ul>
+                <li>test1</li>
+                <li>test2</li>
+              </ul>
+            </div>
+          </div>
         </Link>
       ) : (
         <ProjectModify

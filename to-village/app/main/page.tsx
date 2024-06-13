@@ -9,18 +9,18 @@ export default function Home() {
         </button>
       </div>
       {/* <Project /> */}
-      <div className="text-2xl mt-6">
+      <div className="text-2xl mt-6 font-bold">
         <div className="ml-4 text">Daily Task</div>
         <ul>
           <li className="mt-2 bg-lime-200 p-2 rounded-full">
             <div className="flex justify-between px-2 pl-4">
-              <div>task</div>
+              <div>테스크</div>
               <div>&#9744;</div>
             </div>
           </li>
           <li className="mt-2 bg-lime-200 p-2 rounded-full">
             <div className="flex justify-between px-2 pl-4">
-              <div>task</div>
+              <div>할 일</div>
               <div>&#9744;</div>
             </div>
           </li>

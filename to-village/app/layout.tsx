@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const stardust = localFont({
+  src: [
+    { path: "./font/PF스타더스트.ttf", weight: "400", style: "normal" },
+    { path: "./font/PF스타더스트 Bold.ttf", weight: "700", style: "bold" },
+  ],
+  display: "swap",
+  variable: "--PFstardust",
+});
 
 export const metadata: Metadata = {
   title: "toVillage",
@@ -16,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scrollbar-hide">
-      <body className={inter.className}>
+      <body className={stardust.className}>
         <div className="container mx-auto relative flex min-h-screen  h-screen  flex-col items-center max-w-7xl bg-white ">
           {children}
         </div>

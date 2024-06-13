@@ -6,6 +6,7 @@ import Calendar from "../Calendar/Calendar";
 import CalendarIcon from "@/assets/img/noun-calendar.svg";
 import RepeatIcon from "@/assets/img/noun-repeat.svg";
 import Image from "next/image";
+import ColorPicker from "../ColorPicker/ColorPicker";
 
 interface Props {
   buttonToggle(state: boolean): void;
@@ -71,7 +72,7 @@ export default function TaskInput({ buttonToggle, parentId }: Props) {
             />
           </div>
           <div className="flex justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center justify-center">
               <button
                 onClick={deadlineButtonHandler}
                 className="text-base px-2 py-1 break-keep rounded-md hover:bg-red-300"
