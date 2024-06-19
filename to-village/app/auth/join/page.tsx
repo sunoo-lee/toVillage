@@ -15,7 +15,7 @@ export default function Join() {
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [code, setCode] = useState("");
-  const [state, setState] = useState("email");
+  const [state, setState] = useState(1);
   const resistNewUesr = userInfoStore((state) => state.resistNewUesr);
   const loginHandler = userInfoStore((state) => state.loginHandler);
 
@@ -32,30 +32,52 @@ export default function Join() {
     router.push("/project");
   };
 
-  const buttonClickHandler = (event: any) => {
-    if (state === "email") {
-      setState("code");
-    } else if (state === "code") {
-      setState("password");
-    } else if (state === "password") {
-      setState("finish");
-    }
-    console.log(email, pwd, code);
+  const stateHandler = () => {
+    // if (state === "email") {
+    //   setState("code");
+    // } else if (state === "code") {
+    //   setState("password");
+    // } else if (state === "password") {
+    //   setState("finish");
+    // }
+    setState((prev) => prev + 1);
+    console.log(state, email, pwd, code);
   };
 
   return (
     <div className="relative w-full h-full  grid place-items-center">
       <div className="relative w-full h-full max-h-[36rem] p-12 flex flex-col justify-between">
-        {state === "email" && <Email email={email} setEmail={setEmail} />}
-        {state === "code" && <Authenticode code={code} setCode={setCode} />}
-        {state === "password" && (
-          <Password password={pwd} setPassword={setPwd} />
+        {state !== 4 ? (
+          <div className=" space-y-6 transform duration-300 transition-[height]">
+            {state > 2 && (
+              <Password
+                password={pwd}
+                setPassword={setPwd}
+                setState={stateHandler}
+              />
+            )}
+            {state > 1 && (
+              <Authenticode
+                code={code}
+                setCode={setCode}
+                setState={stateHandler}
+              />
+            )}
+            {state > 0 && (
+              <Email
+                email={email}
+                setEmail={setEmail}
+                setState={stateHandler}
+              />
+            )}
+          </div>
+        ) : (
+          <Finish email={email} />
         )}
-        {state === "finish" && <Finish email={email} />}
         <>
-          {state !== "finish" && (
+          {state < 4 && (
             <button
-              onClick={buttonClickHandler}
+              onClick={stateHandler}
               className="relative w-auto grid place-items-center"
             >
               <Image
@@ -68,7 +90,7 @@ export default function Join() {
               </span>
             </button>
           )}
-          {state === "finish" && (
+          {state === 4 && (
             <button
               onClick={completeButtonHandle}
               className="relative w-auto grid place-items-center"
@@ -79,7 +101,7 @@ export default function Join() {
                 className="relative z-0 top-0 left-0 right-0 w-full h-auto"
               />
               <span className="absolute z-10 tracking-tighter font-bold text-3xl whitespace-nowrap text-[#F3E8E3] text-shadow shadow-[#6B4B45] ">
-                다음
+                완료
               </span>
             </button>
           )}

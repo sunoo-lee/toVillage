@@ -3,7 +3,8 @@ import { create } from "zustand";
 
 interface UserInfoStore {
   signInState: boolean;
-  loginHandler: (userInfo: UserInfo) => void;
+  autoLogin: boolean;
+  loginHandler: (userInfo: UserInfo, autoLogin: boolean) => void;
   resistNewUesr: (userInfo: UserInfo) => void;
 }
 interface UserInfo {
@@ -13,7 +14,8 @@ interface UserInfo {
 
 const userInfoStore = create<UserInfoStore>((set, get) => ({
   signInState: false,
-  loginHandler: async (userInfo: UserInfo) => {
+  autoLogin: false,
+  loginHandler: async (userInfo: UserInfo, autoLogin: boolean) => {
     try {
       const response = await axios.post(
         "http://localhost:8080/auth/login",
@@ -21,7 +23,11 @@ const userInfoStore = create<UserInfoStore>((set, get) => ({
       );
       const { access_token } = await response.data;
       axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
-      localStorage.setItem("access_token", access_token);
+      if (autoLogin) {
+        localStorage.setItem("access_token", access_token);
+      } else {
+        sessionStorage.setItem("access_token", access_token);
+      }
     } catch (error: any) {
       alert(error.message);
     }

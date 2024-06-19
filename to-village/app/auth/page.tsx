@@ -29,7 +29,9 @@ export default function Auth() {
   };
 
   useEffect(() => {
-    const access_token = localStorage.getItem("access_token");
+    const access_token =
+      localStorage.getItem("access_token") ||
+      sessionStorage.getItem("access_token");
     axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
 
     if (access_token) {

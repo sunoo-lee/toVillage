@@ -26,7 +26,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scrollbar-hide">
-      <body className={stardust.className}>
+      {/* <body className={stardust.className}> */}
+      <body>
         <div className="container mx-auto relative flex min-h-screen  h-screen  flex-col items-center max-w-7xl bg-white ">
           {children}
         </div>
