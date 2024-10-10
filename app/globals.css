@@ -2,22 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* 한글 범위:  U+AC00-D7A3
+영어 대문자 범위 :  U+0041-005A
+영어 소문자 범위 :   U+0061-007A
+숫자 범위 : U+0030-0039
+특수 문자: U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E */
+
+@font-face {
+  font-family: "PFStardust";
+  src: url("/font/PF스타더스트.ttf");
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+AC00-D7A3, U+0020-002F, U+003A-0040, U+005B-0060, U+007B-007E;
+}
+@font-face {
+  font-family: "NeoDunggeunmoPro-Regular";
+  src: url("/font/NeoDunggeunmoPro-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+0061-007A, U+0041-005A, U+0030-0039;
 }
 
-@media (prefers-color-scheme: dark) {
+/* :root {
+  --background: #ffffff;
+  --foreground: #171717;
+} */
+
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "PFStardust", "NeoDunggeunmoPro-Regular";
+  /* font-family: "NeoDunggeunmo Pro"; */
 }
 
 @layer utilities {
