@@ -1,5 +1,6 @@
 "use client";
 
+import ArrayTest from "@/components/Array/Array";
 import MainPage from "@/components/Main/MainPage";
 import ProjectDetail from "@/components/Projects/ProjectDetail";
 import ProjectPage from "@/components/Projects/ProjectPage";
@@ -12,6 +13,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const currentPage = pageStore((state) => state.currentPage);
   const [todoModal, setTodoModal] = useState(false);
+  const [arrayModal, setArrayModal] = useState(false);
 
   useEffect(() => {
     console.log(currentPage);
@@ -23,6 +25,10 @@ export default function Home() {
 
   const modalCloseHandler = () => {
     setTodoModal((prev) => false);
+  };
+
+  const arrayModalHandler = () => {
+    setArrayModal((prev) => !prev);
   };
 
   const addPoint = async () => {
@@ -104,6 +110,12 @@ export default function Home() {
       >
         팝업
       </button>
+      <button
+        onClick={arrayModalHandler}
+        className="absolute px-6 py-2 rounded-full top-32 left-5 bg-slate-200"
+      >
+        영지 테스트
+      </button>
       <div className="absolute top-16 right-5 space-x-3">
         <button
           onClick={addPoint}
@@ -143,6 +155,7 @@ export default function Home() {
         </Link>
         <button className=" px-6 py-2 rounded-full  bg-slate-200">마을</button>
       </div>
+      {arrayModal && <ArrayTest />}
     </main>
   );
 }
