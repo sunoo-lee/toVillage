@@ -26,8 +26,8 @@ const ARRAY = [
 ];
 export default function ArrayTest() {
   return (
-    <div className="bg-white w-[600px] h-[600px] relative rotate-45">
-      <div className="w-full h-full">
+    <div className=" w-[600px] h-[600px] relative scale-y-50">
+      <div className="w-full h-full rotate-45">
         {ARRAY.map((item, i) => (
           <div className="flex  h-1/4" key={i}>
             {item.map((element, j) => (
